@@ -1,0 +1,24 @@
+{
+  "name": "allex_avltreelowlevellib",
+  "version": "1.0.0",
+  "description": "JavaScript implementation of AVL tree",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/allex-lowlevel-libs/avltree.git"
+  },
+  "keywords": [
+    "ecosystem:AllexJS",
+    "avl",
+    "tree"
+  ],
+  "author": "Andrija Petrovic <andrija.hers@gmail.com>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/allex-lowlevel-libs/avltree/issues"
+  },
+  "homepage": "https://github.com/allex-lowlevel-libs/avltree#readme"
+}

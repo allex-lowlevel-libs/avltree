@@ -29,7 +29,7 @@ Node.prototype.advance = function(val){
   if (val === 1){
     return this.right;
   }
-  throw Error('Invalid value' + val + '. -1 for left, 1 for right.');
+  throw new Error('Invalid value' + val + '. -1 for left, 1 for right.');
 };
 
 Node.prototype.higherSubtreeRootLeft = function(){

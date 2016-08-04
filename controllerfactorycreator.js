@@ -1,6 +1,7 @@
 function createAvlTreeControllerFactory(Stack) {
   'use strict';
   return function createAvlTreeController(compare){
+    //TODO check if compare is a function??
     function AvlTreeController(myTree){
       this.tree = myTree;
     }
@@ -232,7 +233,7 @@ function createAvlTreeControllerFactory(Stack) {
         if (res===0){
           console.trace();
           prevStack.destroy();
-          throw Error('Items must have unique content ' + JSON.stringify(content) + ' is not unique.');
+          throw new Error('Items must have unique content ' + JSON.stringify(content) + ' is not unique.');
         }
         if (res===-1){
           leaf.left = newItem;

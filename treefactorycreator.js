@@ -21,17 +21,17 @@ function createTreeFactory(dlistbase, inherit) {
     }
     AvlTree.prototype.purge = function(){
       var name;
-      while(name === this.traverseConditionally(contentGetter)){
+      while(name = this.traverseConditionally(contentGetter)){
         this.remove(name);
       }
     };
 
-    AvlTree.prototype.count= function(){
+    AvlTree.prototype.count = function(){
       return this.count;
     }
 
     AvlTree.prototype.empty = function(){
-      return this.count== 0;
+      return this.count === 0;
     };
 
     AvlTree.prototype.add = function(){ //arguments are to be fed into nodefactory
@@ -45,11 +45,11 @@ function createTreeFactory(dlistbase, inherit) {
       this.count--;
     };
 
-    AvlTree.prototype.remove = function(item){
+    AvlTree.prototype.remove = function(content){
       if (!this.root){
         return null;
       }
-      return this.controller.remove(item);
+      return this.controller.remove(content);
     };
 
     AvlTree.prototype.find = function(content){

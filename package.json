@@ -1,6 +1,6 @@
 {
   "name": "allex_avltreelowlevellib",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "JavaScript implementation of AVL tree",
   "main": "index.js",
   "scripts": {

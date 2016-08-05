@@ -38,7 +38,7 @@ describe('Basic \'AVL tree\' lib testing', function(){
     var second = Tree.add(2);
     var third = Tree.add(3);
     Tree.purge();
-    expect(Tree.count).to.be.equal(0);
+    expect(Tree.empty()).to.be.true;
   });
 });
 
@@ -61,7 +61,7 @@ describe('Testing AVL structure (+100000 elements, -50000 elements). Adding/Remo
   it('Advanced structure tests', function(){
     var AvlTree = TreeFactory(plainCompare,simpleNodeFactory);
     var Tree = new AvlTree();
-    var i;
+    var i,elem;
     for (i=0; i<100000; i++){
       Tree.add(i);
     }
@@ -71,6 +71,31 @@ describe('Testing AVL structure (+100000 elements, -50000 elements). Adding/Remo
     Tree.traverseConditionally(function(content,node){
       if (node.absHeightDiff > 1) throw new Error('Corruputed AVL tree');
     });
+    Tree.destroy();
+  });
+});
+
+describe('Testing find/findOne functions of AVL tree (+100000 elements, -50000 elements).', function(){
+  it('Advanced structure tests', function(){
+    var AvlTree = TreeFactory(plainCompare,simpleNodeFactory);
+    var Tree = new AvlTree();
+    var i,content;
+    function higherThan(limit,content,item){
+      if (content > limit){
+        return true;
+      }
+      return false;
+    }
+    for (i=0; i<100000; i++){
+      Tree.add(i);
+    }
+    for (i=0; i<50000; i++){
+      Tree.remove(i);
+    }
+    expect(Tree.find(66666)).not.to.be.null;
+    expect(Tree.find(33333)).to.be.null;
+    content = Tree.findOne(higherThan.bind(null,66666));
+    expect(content).to.be.equal(66667);
     Tree.destroy();
   });
 });

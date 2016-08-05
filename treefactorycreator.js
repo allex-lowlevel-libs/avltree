@@ -41,6 +41,7 @@ function createTreeFactory(dlistbase, inherit) {
       return newItem;
     };
 
+    //TODO private?
     AvlTree.prototype.decCount = function(){
       this.count--;
     };
@@ -57,10 +58,10 @@ function createTreeFactory(dlistbase, inherit) {
     };
 
     AvlTree.prototype.findOne = function(criterionfunction){
-      var item = this.firstItemToSatisfy(criterionfunction);
-      if(item){
-        return item.content;
+      if ('function' !== typeof criterionfunction){
+        throw new Error('First parameter \'criterionfunction\' is not a function');
       }
+      return this.firstItemToSatisfy(criterionfunction);
     };
 
     AvlTree.prototype.firstItemToSatisfyPreOrder = function(func){

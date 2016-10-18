@@ -233,7 +233,8 @@ function createAvlTreeControllerFactory(Stack) {
         if (res===0){
           console.trace();
           prevStack.destroy();
-          throw new Error('Items must have unique content ' + JSON.stringify(content) + ' is not unique.');
+          console.error(content, 'is not unique');
+          throw new Error('Items must have unique content');
         }
         if (res===-1){
           leaf.left = newItem;
@@ -400,7 +401,8 @@ function createAvlTreeControllerFactory(Stack) {
         if (res === 0){
           console.trace();
           prevStack.destroy();
-          throw Error('Items must have unique content ' + JSON.stringify(content) + ' is not unique.');
+          console.error(content, 'is not unique');
+          throw new Error('Items must have unique content');
         }
         prevStack.addToFront(curr);
         curr = curr.advance(res);

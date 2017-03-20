@@ -14,16 +14,23 @@ function createStack(doublelinkedlistbase, inherit) {
   ListMixin.addMethods(TreeBranchStack);
 
   TreeBranchStack.prototype.addToFront = function(content){
-    checkForTreeNode(content);
+    if (!checkForTreeNode(content)) {
+      return;
+    }
     var newItem = new TreeBranchItem(content);
     this.assureForController();
     this.controller.addToFront(newItem);
   };
 
   TreeBranchStack.prototype.addToBack = function(content){
-    checkForTreeNode(content);
-    this.assureForController();
-    var newItem = new TreeBranchItem(content);
+    var newItem;
+    if (!checkForTreeNode(content)) {
+      return;
+    }
+    if (!this.assureForController()) {
+      return;
+    }
+    newItem = new TreeBranchItem(content);
     this.controller.addToBack(newItem);
   };
   TreeBranchStack.prototype.push = TreeBranchStack.prototype.addToBack;
@@ -33,9 +40,13 @@ function createStack(doublelinkedlistbase, inherit) {
     if (!this.head) {
       return;
     }
+    if (!this.assureForController()) {
+      return;
+    }
     ret = this.head.content;
-    checkForTreeNode(ret);
-    this.assureForController();
+    if (!checkForTreeNode(ret)) {
+      return;
+    }
     head = this.head;
     this.controller.remove(this.head);
     head.destroy();
@@ -43,7 +54,9 @@ function createStack(doublelinkedlistbase, inherit) {
   };
 
   TreeBranchStack.prototype.addAsPrevTo = function (content, prevtarget) {
-    this.assureForController();
+    if (!this.assureForController()) {
+      return;
+    }
     this.controller.addAsPrevTo(new TreeBranchItem(content), prevtarget);
   };
 
@@ -57,11 +70,12 @@ function createStack(doublelinkedlistbase, inherit) {
   };
 
   function checkForTreeNode(ret) {
-    if (!ret.hasOwnProperty('left')) {
+    if (!(ret && ret.hasOwnProperty('left'))) {
       console.trace();
       console.error(ret);
-      process.exit(0);
+      return false;
     }
+    return true;
   }
   return TreeBranchStack;
 }

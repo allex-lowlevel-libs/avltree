@@ -35,6 +35,9 @@ function createTreeFactory(dlistbase, inherit) {
     };
 
     AvlTree.prototype.add = function(){ //arguments are to be fed into nodefactory
+      if (!this.root) {
+        return null;
+      }
       var newItem = nodefactory.apply(null,arguments);//new nodector(content);
       this.controller.add(newItem);
       this.count++;

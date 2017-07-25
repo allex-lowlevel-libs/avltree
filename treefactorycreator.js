@@ -54,6 +54,9 @@ function createTreeFactory(dlistbase, inherit) {
     };
 
     AvlTree.prototype.find = function(content){
+      if (!this.root){
+        return null;
+      }
       return this.controller.find(content);
     };
 

@@ -37,7 +37,7 @@ function createTreeFactory(dlistbase, inherit) {
     };
 
     AvlTree.prototype.add = function(){ //arguments are to be fed into nodefactory
-      if (!(this.root && this.controller)) {
+      if (!this.controller) {
         return null;
       }
       var newItem = nodefactory.apply(null,arguments);//new nodector(content);
@@ -52,14 +52,14 @@ function createTreeFactory(dlistbase, inherit) {
     };
 
     AvlTree.prototype.remove = function(content){
-      if (!(this.root && this.controller)) {
+      if (!this.controller) {
         return null;
       }
       return this.controller.remove(content);
     };
 
     AvlTree.prototype.find = function(content){
-      if (!(this.root && this.controller)) {
+      if (!this.controller) {
         return null;
       }
       return this.controller.find(content);
@@ -73,49 +73,49 @@ function createTreeFactory(dlistbase, inherit) {
     };
 
     AvlTree.prototype.firstItemToSatisfyPreOrder = function(func){
-      if (!(this.root && this.controller)) {
+      if (!this.controller) {
         return null;
       }
       return this.controller.firstItemToSatisfyPreOrder(func,this.root);
     };
 
     AvlTree.prototype.firstItemToSatisfy = function(func){
-      if (!(this.root && this.controller)) {
+      if (!this.controller) {
         return null;
       }
       return this.controller.firstItemToSatisfyInOrder(func,this.root);
     };
 
     AvlTree.prototype.firstItemToSatisfyPostOrder = function(func){
-      if (!(this.root && this.controller)) {
+      if (!this.controller) {
         return null;
       }
       return this.controller.firstItemToSatisfyPostOrder(func,this.root);
     };
 
     AvlTree.prototype.lastItemToSatisfyPreOrder = function(func){
-      if (!(this.root && this.controller)) {
+      if (!this.controller) {
         return null;
       }
       return this.controller.lastItemToSatisfyPreOrder(func,this.root,null);
     };
 
     AvlTree.prototype.lastItemToSatisfy = function(func){
-      if (!(this.root && this.controller)) {
+      if (!this.controller) {
         return null;
       }
       return this.controller.lastItemToSatisfyInOrder(func,this.root,null);
     };
 
     AvlTree.prototype.lastItemToSatisfyPostOrder = function(func){
-      if (!(this.root && this.controller)) {
+      if (!this.controller) {
         return null;
       }
       return this.controller.lastItemToSatisfyPostOrder(func,this.root,null);
     };
 
     AvlTree.prototype.traverseInOrder = function(func){
-      if (!(this.root && this.controller)) {
+      if (!this.controller) {
         return;
       }
       this.controller.traverseInOrder(func,this.root,0);
@@ -124,21 +124,21 @@ function createTreeFactory(dlistbase, inherit) {
     AvlTree.prototype.traverse = AvlTree.prototype.traverseInOrder;
 
     AvlTree.prototype.traversePreOrder= function(func){
-      if (!(this.root && this.controller)) {
+      if (!this.controller) {
         return;
       }
       this.controller.traversePreOrder(func,this.root,0);
     }
 
     AvlTree.prototype.traversePostOrder= function(func){
-      if (!(this.root && this.controller)) {
+      if (!this.controller) {
         return;
       }
       this.controller.traversePostOrder(func,this.root,0);
     }
 
     AvlTree.prototype.traverseInOrderConditionally = function(func){
-      if (!(this.root && this.controller)) {
+      if (!this.controller) {
         return;
       }
       return this.controller.traverseInOrderConditionally(func,this.root,0);
@@ -147,14 +147,14 @@ function createTreeFactory(dlistbase, inherit) {
     AvlTree.prototype.traverseConditionally = AvlTree.prototype.traverseInOrderConditionally;
 
     AvlTree.prototype.traversePreOrderConditionally= function(func){
-      if (!(this.root && this.controller)) {
+      if (!this.controller) {
         return;
       }
       return this.controller.traversePreOrderConditionally(func,this.root,0);
     }
 
     AvlTree.prototype.traversePostOrderConditionally= function(func){
-      if (!(this.root && this.controller)) {
+      if (!this.controller) {
         return;
       }
       return this.controller.traversePostOrderConditionally(func,this.root,0);

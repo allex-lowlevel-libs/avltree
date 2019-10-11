@@ -33,19 +33,25 @@ Node.prototype.advance = function(val){
 };
 
 Node.prototype.higherSubtreeRootLeft = function(){
+  return (this.leftCount >= this.rightCount) ? this.left : this.right;
+  /*
   if (this.leftCount >= this.rightCount){
     return this.left;
   }else{
     return this.right;
   }
+  */
 }
 
 Node.prototype.higherSubtreeRootRight = function(){
+  return (this.rightCount >= this.leftCount) ? this.right : this.left;
+  /*
   if (this.rightCount >= this.leftCount){
     return this.right;
   }else{
     return this.left;
   }
+  */
 }
 
 Node.prototype.higherSubtree = function(){

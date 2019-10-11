@@ -179,8 +179,9 @@ function createTreeFactory(dlistbase, inherit) {
     }
 
     AvlTree.prototype.drain = function(){
-      var ret = new Array(this.length),countobj={count:0};
-      this.traverse(drainer.bind(null,ret,countobj));
+      var ret = new Array(this.length),countobj={count:0},_ret = ret;
+      this.traverse(drainer.bind(null,_ret,countobj));
+      _ret = null;
       this.purge();
       return ret;
     };

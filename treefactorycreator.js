@@ -119,9 +119,16 @@ function createTreeFactory(dlistbase, inherit) {
         return;
       }
       this.controller.traverseInOrder(func,this.root,0);
-    }
+    };
+    AvlTree.prototype.traverseInOrderSafe = function(func, errorcaption){
+      if (!this.controller) {
+        return;
+      }
+      this.controller.traverseInOrder(func,this.root,0, errorcaption||'Error in AvlTree.traverseSafe');
+    };
 
     AvlTree.prototype.traverse = AvlTree.prototype.traverseInOrder;
+    AvlTree.prototype.traverseSafe = AvlTree.prototype.traverseInOrderSafe;
 
     AvlTree.prototype.traversePreOrder= function(func){
       if (!this.controller) {

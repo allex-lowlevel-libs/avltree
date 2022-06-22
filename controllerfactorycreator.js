@@ -443,90 +443,131 @@ function createAvlTreeControllerFactory(Stack) {
       return null;
     };
 
-    AvlTreeController.prototype.firstItemToSatisfyPreOrder = function(func, node){
+    function nodeApplier (node, thingy, errorcaption) {
+      if (!errorcaption) {
+        return node.apply(thingy);
+      }
+      if (!(typeof errorcaption == 'string')) {
+        console.error('what is errorcaption?', errorcaption);
+        process.exit(1);
+      }
+      try {
+        return node.apply(thingy);
+      } catch (e) {
+        console.log(errorcaption+' :', e);
+        return;
+      }
+    }
+    function nodeApplier2 (node, thingy1, thingy2, errorcaption) {
+      if (!errorcaption) {
+        return node.apply(thingy1, thingy2);
+      }
+      try {
+        return node.apply(thingy1, thingy2);
+      } catch (e) {
+        console.log(errorcaption+' :', e);
+        return;
+      }
+    }
+
+    AvlTreeController.prototype.firstItemToSatisfyPreOrder = function(func, node, errorcaption){
+      var left, right, content;
       if (!node) return null;
-      var check = node.apply(func);
+      left = node.left;
+      right = node.right;
+      content = node.content;
+      var check = nodeApplier(node, func, errorcaption);
       if ('boolean' !== typeof check){
         throw Error('func needs to return a boolean value');
       }
       if (!!check){
-        return node.content;
+        return content;
       }
-      var ret = this.firstItemToSatisfyPreOrder(func,node.left);
+      var ret = this.firstItemToSatisfyPreOrder(func,left, errorcaption);
       if (!!ret) return ret;
-      ret = this.firstItemToSatisfyPreOrder(func,node.right);
+      ret = this.firstItemToSatisfyPreOrder(func,right, errorcaption);
       if (!!ret) return ret;
     };
 
-    AvlTreeController.prototype.firstItemToSatisfyInOrder = function(func, node){
+    AvlTreeController.prototype.firstItemToSatisfyInOrder = function(func, node, errorcaption){
+      var right, content, ret;
       if (!node) return null;
-      var ret = this.firstItemToSatisfyInOrder(func,node.left);
+      content = node.content;
+      right = node.right;
+      ret = this.firstItemToSatisfyInOrder(func,node.left, errorcaption);
       if (!!ret) return ret;
-      var check = node.apply(func);
+      var check = nodeApplier(node, func, errorcaption);
       if ('boolean' !== typeof check){
         throw Error('func needs to return a boolean value');
       }
       if (!!check){
-        return node.content;
+        return content;
       }
-      ret = this.firstItemToSatisfyInOrder(func,node.right);
+      ret = this.firstItemToSatisfyInOrder(func,right, errorcaption);
       if (!!ret) return ret;
     };
 
-    AvlTreeController.prototype.firstItemToSatisfyPostOrder = function(func, node){
+    AvlTreeController.prototype.firstItemToSatisfyPostOrder = function(func, node, errorcaption){
+      var content;
       if (!node) return null;
-      var ret = this.firstItemToSatisfyPostOrder(func,node.left);
+      var ret = this.firstItemToSatisfyPostOrder(func,node.left, errorcaption);
       if (!!ret) return ret;
-      ret = this.firstItemToSatisfyPostOrder(func,node.right);
+      ret = this.firstItemToSatisfyPostOrder(func,node.right, errorcaption);
       if (!!ret) return ret;
-      var check = node.apply(func);
+      content = node.content;
+      var check = nodeApplier(node, func, errorcaption);
       if ('boolean' !== typeof check){
         throw Error('func needs to return a boolean value');
       }
       if (!!check){
-        return node.content;
+        return content;
       }
     };
 
-    AvlTreeController.prototype.lastItemToSatisfyPreOrder = function(func,node,prev){
+    AvlTreeController.prototype.lastItemToSatisfyPreOrder = function(func,node,prev, errorcaption){
+      var left, right;
       if (!node) return null;
-      var check = node.apply(func);
+      left = node.left;
+      right = node.right;
+      var check = nodeApplier(node, func, errorcaption);
       if ('boolean' !== typeof check){
         throw Error('func needs to return a boolean value');
       }
       if (!check){
         return !!prev ? prev.content : null;
       }
-      var ret = this.lastItemToSatisfyPreOrder(func,node.left,node);
+      var ret = this.lastItemToSatisfyPreOrder(func,left,node, errorcaption);
       if (!!ret) return ret;
-      ret = this.lastItemToSatisfyPreOrder(func,node.right,node);
+      ret = this.lastItemToSatisfyPreOrder(func,right,node, errorcaption);
       if (!!ret) return ret;
       return null;
     };
 
-    AvlTreeController.prototype.lastItemToSatisfyInOrder = function(func,node,prev){
+    AvlTreeController.prototype.lastItemToSatisfyInOrder = function(func,node,prev, errorcaption){
+      var right;
       if (!node) return null;
-      var ret = this.lastItemToSatisfyInOrder(func,node.left,node);
+      var ret = this.lastItemToSatisfyInOrder(func,node.left,node, errorcaption);
       if (!!ret) return ret;
-      var check = node.apply(func);
+      right = node.right;
+      var check = nodeApplier(node, func, errorcaption);
       if ('boolean' !== typeof check){
         throw Error('func needs to return a boolean value');
       }
       if (!check){
         return !!prev ? prev.content : null;
       }
-      ret = this.lastItemToSatisfyInOrder(func,node.right,node);
+      ret = this.lastItemToSatisfyInOrder(func,right,node, errorcaption);
       if (!!ret) return ret;
       return null;
     };
 
-    AvlTreeController.prototype.lastItemToSatisfyPostOrder = function(func,node,prev){
+    AvlTreeController.prototype.lastItemToSatisfyPostOrder = function(func,node,prev, errorcaption){
       if (!node) return null;
-      var ret = this.lastItemToSatisfyPostOrder(func,node.left,node);
+      var ret = this.lastItemToSatisfyPostOrder(func,node.left,node, errorcaption);
       if (!!ret) return ret;
-      ret = this.lastItemToSatisfyPostOrder(func,node.right,node);
+      ret = this.lastItemToSatisfyPostOrder(func,node.right,node, errorcaption);
       if (!!ret) return ret;
-      var check = node.apply(func);
+      var check = nodeApplier(node, func, errorcaption);
       if ('boolean' !== typeof check){
         throw Error('func needs to return a boolean value');
       }
@@ -536,63 +577,73 @@ function createAvlTreeControllerFactory(Stack) {
       return null;
     };
 
-    AvlTreeController.prototype.traversePreOrder = function(func, node, depth){
+    AvlTreeController.prototype.traversePreOrder = function(func, node, depth, errorcaption){
+      var left, right;
       if (!node) return;
-      node.apply(func,depth);
-      this.traversePreOrder(func,node.left,depth+1);
-      this.traversePreOrder(func,node.right,depth+1);
+      left = node.left;
+      right = node.right;
+      nodeApplier2(node,func,depth, errorcaption);
+      this.traversePreOrder(func,left,depth+1, errorcaption);
+      this.traversePreOrder(func,right,depth+1, errorcaption);
     };
-    AvlTreeController.prototype.traversePreOrderConditionally = function(func, node, depth){
+    AvlTreeController.prototype.traversePreOrderConditionally = function(func, node, depth, errorcaption){
+      var left, right;
       if (!node) return;
-      var ret = node.apply(func,depth);
+      left = node.left;
+      right = node.right;
+      var ret = nodeApplier2(node,func,depth, errorcaption);
       if(typeof ret !== 'undefined'){
         return ret;
       }
-      ret = this.traversePreOrderConditionally(func,node.left,depth+1);
+      ret = this.traversePreOrderConditionally(func,left,depth+1, errorcaption);
       if(typeof ret !== 'undefined'){
         return ret;
       }
-      return this.traversePreOrderConditionally(func,node.right,depth+1);
-    };
-
-    AvlTreeController.prototype.traverseInOrder = function(func, node, depth){
-      if (!node) return;
-      this.traverseInOrder(func,node.left,depth+1);
-      node.apply(func,depth);
-      this.traverseInOrder(func,node.right,depth+1);
-    };
-
-    AvlTreeController.prototype.traverseInOrderConditionally = function(func, node, depth){
-      if (!node) return;
-      var ret = this.traverseInOrderConditionally(func,node.left,depth+1);
-      if(typeof ret !== 'undefined'){
-        return ret;
-      }
-      ret = node.apply(func,depth);
-      if(typeof ret !== 'undefined'){
-        return ret;
-      }
-      return this.traverseInOrderConditionally(func,node.right,depth+1);
+      return this.traversePreOrderConditionally(func,right,depth+1, errorcaption);
     };
 
-    AvlTreeController.prototype.traversePostOrder = function(func, node, depth){
+    AvlTreeController.prototype.traverseInOrder = function(func, node, depth, errorcaption){
+      var right;
       if (!node) return;
-      this.traversePostOrder(func,node.left,depth+1);
-      this.traversePostOrder(func,node.right,depth+1);
-      node.apply(func,depth);
+      right = node.right;
+      this.traverseInOrder(func,node.left,depth+1, errorcaption);
+      nodeApplier2(node,func,depth, errorcaption);
+      this.traverseInOrder(func,right,depth+1, errorcaption);
+    };
+
+    AvlTreeController.prototype.traverseInOrderConditionally = function(func, node, depth, errorcaption){
+      var right;
+      if (!node) return;      
+      var ret = this.traverseInOrderConditionally(func,node.left,depth+1, errorcaption);
+      if(typeof ret !== 'undefined'){
+        return ret;
+      }
+      right = node.right;
+      ret = nodeApplier2(node,func,depth, errorcaption);
+      if(typeof ret !== 'undefined'){
+        return ret;
+      }
+      return this.traverseInOrderConditionally(func,right,depth+1, errorcaption);
+    };
+
+    AvlTreeController.prototype.traversePostOrder = function(func, node, depth, errorcaption){
+      if (!node) return;
+      this.traversePostOrder(func,node.left,depth+1, errorcaption);
+      this.traversePostOrder(func,node.right,depth+1, errorcaption);
+      nodeApplier2(node,func,depth, errorcaption);
     };
     
-    AvlTreeController.prototype.traversePostOrderConditionally = function(func, node, depth){
+    AvlTreeController.prototype.traversePostOrderConditionally = function(func, node, depth, errorcaption){
       if (!node) return;
-      var ret = this.traversePostOrderConditionally(func,node.left,depth+1);
+      var ret = this.traversePostOrderConditionally(func,node.left,depth+1, errorcaption);
       if(typeof ret !== 'undefined'){
         return ret;
       }
-      ret = this.traversePostOrderConditionally(func,node.right,depth+1);
+      ret = this.traversePostOrderConditionally(func,node.right,depth+1, errorcaption);
       if(typeof ret !== 'undefined'){
         return ret;
       }
-      return node.apply(func,depth);
+      return nodeApplier2(node,func,depth, errorcaption);
     };
     return AvlTreeController;
   }

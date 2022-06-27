@@ -22,10 +22,12 @@ function createTreeFactory(dlistbase, inherit) {
       return content;
     }
     AvlTree.prototype.purge = function(){
-      var name;
-      while(name = this.traverseConditionally(contentGetter)){
-        this.remove(name);
-      }
+      var nodes = [], _ns = nodes;
+      this.controller.traverseInOrder(function (n) {_ns.push(n);});
+      _ns = null;
+      nodes.forEach(function (node) {node.destroy();});
+      nodes = null;
+      this.root = null;
     };
 
     AvlTree.prototype.count = function(){
@@ -120,15 +122,6 @@ function createTreeFactory(dlistbase, inherit) {
       }
       this.controller.traverseInOrder(func,this.root,0);
     };
-    AvlTree.prototype.traverseInOrderSafe = function(func, errorcaption){
-      if (!this.controller) {
-        return;
-      }
-      this.controller.traverseInOrder(func,this.root,0, errorcaption||'Error in AvlTree.traverseSafe');
-    };
-
-    AvlTree.prototype.traverse = AvlTree.prototype.traverseInOrder;
-    AvlTree.prototype.traverseSafe = AvlTree.prototype.traverseInOrderSafe;
 
     AvlTree.prototype.traversePreOrder= function(func){
       if (!this.controller) {
@@ -150,8 +143,6 @@ function createTreeFactory(dlistbase, inherit) {
       }
       return this.controller.traverseInOrderConditionally(func,this.root,0);
     }
-
-    AvlTree.prototype.traverseConditionally = AvlTree.prototype.traverseInOrderConditionally;
 
     AvlTree.prototype.traversePreOrderConditionally= function(func){
       if (!this.controller) {
@@ -180,6 +171,7 @@ function createTreeFactory(dlistbase, inherit) {
       console.log(s+item.contentToString()+' ('+level+')');
     }
 
+    /*
     function drainer(arry,countobj,content){
       arry[countobj.count] = content;
       countobj.count++;
@@ -192,6 +184,7 @@ function createTreeFactory(dlistbase, inherit) {
       this.purge();
       return ret;
     };
+    */
     return AvlTree;
   }
 }

@@ -21,13 +21,17 @@ function createTreeFactory(dlistbase, inherit) {
     function contentGetter(content,node){
       return content;
     }
+    function destroyer (node) {
+      node.destroy();
+    }
     AvlTree.prototype.purge = function(){
       var nodes = [], _ns = nodes;
       this.controller.traverseInOrder(function (n) {_ns.push(n);});
       _ns = null;
-      nodes.forEach(function (node) {node.destroy();});
+      nodes.forEach(destroyer);
       nodes = null;
       this.root = null;
+      this.count = 0;
     };
 
     AvlTree.prototype.count = function(){
